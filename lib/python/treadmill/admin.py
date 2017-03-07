@@ -393,8 +393,8 @@ class Admin(object):
                 server = ldap3.Server(uri)
                 self.ldap = ldap3.Connection(
                     server,
-                    authentication=ldap3.SASL,
-                    sasl_mechanism='GSSAPI',
+                    authentication=ldap3.ANONYMOUS,
+                    # sasl_mechanism='GSSAPI',
                     client_strategy=ldap3.STRATEGY_SYNC_RESTARTABLE,
                     auto_bind=True
                 )
