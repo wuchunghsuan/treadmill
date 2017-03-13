@@ -85,6 +85,8 @@ class ZkContext(object):
 
     @property
     def conn(self):
+        # Notice: This is a hack
+        self.url = "zookeeper://localhost:2181"
         """Lazily creates Zookeeper client."""
         if self._conn is None:
             _LOGGER.debug('Connecting to Zookeeper %s', self.url)
@@ -93,8 +95,8 @@ class ZkContext(object):
                     self._resolve()
                 if self.url is None:
                     raise ContextError('Zookeeper url not set.')
-
-            self.proid, _ = self.url[len('zookeeper://'):].split('@')
+            # Notice: This is a hack
+            # self.proid, _ = self.url[len('zookeeper://'):].split('@')
             self._conn = zkutils.connect(self.url, listener=zkutils.exit_never)
 
         return self._conn
