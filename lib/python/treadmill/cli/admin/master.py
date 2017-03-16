@@ -48,6 +48,7 @@ def server_group(parent):
             path = parent.split('/')
             bucket = None
             for bucket, parent in zip(path, [None] + path[:-1]):
+                print bucket, parent
                 master.create_bucket(context.GLOBAL.zk.conn, bucket, parent)
             assert bucket is not None, 'server topology missing.'
 

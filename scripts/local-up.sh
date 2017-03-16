@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Usage:
-#       local-up.sh
+#       local-up.sh Start the standalone scheduler.
 
 # Timestamped log, e.g. log "cluster created".
 #
@@ -13,7 +13,6 @@ function log {
 
 ROOT=$(dirname "${BASH_SOURCE}")/..
 TMPDIR=$(mktemp -d /tmp/treadmill.XXXXXXXXXX)
-CELL="test"
 
 # Clean up local run of cyclone.
 function local-cleanup {
@@ -30,9 +29,12 @@ if [[ "$(which docker)" == "" ]]; then
   exit 1
 fi
 
+#cd ${TMPDIR}
+#pwd
+#cd - > /dev/null
+
 cd ${ROOT}
 docker-compose up -d --force-recreate
-# TODO: Initialize Zookeeper
-./bin/treadmill --debug sproc --cell ${CELL} scheduler ${TMPDIR}
+./bin/treadmill --debug sproc scheduler ${TMPDIR}
 TMSCHEDULER_PID=$!
 cd - > /dev/null

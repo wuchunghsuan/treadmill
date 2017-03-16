@@ -804,6 +804,7 @@ class Master(object):
         lock = self.zkclient.Lock('/master-election', me)
         _LOGGER.info('Waiting for leader lock.')
         with lock:
+            _LOGGER.debug("Run real logic.")
             self.run_real()
 
     def _schedule_reboot(self, servername):
@@ -850,6 +851,7 @@ class Master(object):
 
     def load_schedule(self):
         """Run scheduler first time and update scheduled data."""
+        _LOGGER.debug("Load Scheduler.")
         placement = self.cell.schedule()
 
         for servername, server in self.cell.members().iteritems():
