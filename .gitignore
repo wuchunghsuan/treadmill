@@ -24,3 +24,4 @@ pep8.log
 plcritic.log
 doc/build
 doc/swagger.json
+server.log

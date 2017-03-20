@@ -14,7 +14,7 @@ function log {
 ROOT=$(dirname "${BASH_SOURCE}")/..
 TMPDIR=$(mktemp -d /tmp/treadmill.XXXXXXXXXX)
 
-# Clean up local run of cyclone.
+# Clean up local run.
 function local-cleanup {
   [ -d "${TMPDIR}" ] && rm -rf ${TMPDIR}
   docker-compose stop
@@ -35,6 +35,8 @@ fi
 
 cd ${ROOT}
 docker-compose up -d --force-recreate
-./bin/treadmill --debug sproc scheduler ${TMPDIR}
+./bin/treadmill --debug sproc scheduler ${TMPDIR} &
 TMSCHEDULER_PID=$!
 cd - > /dev/null
+
+while true; do sleep 1; done
