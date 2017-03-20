@@ -1,0 +1,150 @@
+[2017年 03月 20日 星期一 17:54:30 CST] Initialize cgroup fs.
+INFO     [MainThread] treadmill.sproc.cgroup:111 - Configuring CPU limits: treadmill cores: 1, treadmill: 6816, treadmill core: 68, treadmill apps: 6748
+INFO     [MainThread] treadmill.sproc.cgroup:150 - Configuring memory limits: total: 488.3M, treadmill total: 1.0G, treadmill core: 1.0G
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/cpu.shares : 6816
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/system/cpu.shares : 20448
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/cpu.shares : 68
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/apps/cpu.shares : 6748
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpuset/system/cpuset.mems : 0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpuset/treadmill/cpuset.mems : 0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpuset/treadmill/cpuset.cpus : 0-0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpuset/system/cpuset.cpus : 1-3
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/memory.limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/memory.memsw.limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/memory.oom_control : 0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/memory.limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/memory.memsw.limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/memory.soft_limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/apps/memory.limit_in_bytes : 0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/apps/memory.memsw.limit_in_bytes : 0
+[2017年 03月 20日 星期一 17:54:35 CST] The root of the server is /tmp/treadmill.server.ovuvfXdwZk, start server process.
+[2017年 03月 20日 星期一 17:54:35 CST] Start localdisk service process.
+[2017年 03月 20日 星期一 17:54:35 CST] Start cgroup service process.
+[2017年 03月 20日 星期一 17:54:35 CST] Start network service process.
+INFO     [MainThread] root:22 - creating and joining: memory/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/tasks : 9651
+INFO     [MainThread] root:22 - creating and joining: cpu/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9651
+INFO     [MainThread] root:22 - creating and joining: cpuacct/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9651
+INFO     [MainThread] root:22 - creating and joining: blkio/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/blkio/treadmill/core/treadmill/tasks : 9651
+INFO     [MainThread] root:31 - setting memory.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.memsw.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.memsw.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.soft_limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.soft_limit_in_bytes : 1073741824
+INFO     [MainThread] root:37 - setting cpu.shares: 68
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/cpu.shares : 68
+DEBUG    [MainThread] treadmill.watchdog:121 - Setting up watchdog: <Lease: svc-LocalDiskResourceService:60>
+DEBUG    [MainThread] treadmill.subproc:107 - check_call environ: (), runas: None, ['lvm', 'vgchange', '--activate', 'y', 'treadmill']
+DEBUG    [MainThread] treadmill.subproc:29 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+DEBUG    [MainThread] treadmill.subproc:33 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+  0 logical volume(s) in volume group "treadmill" now active
+DEBUG    [MainThread] treadmill.subproc:121 - Finished, rc: 0
+DEBUG    [MainThread] treadmill.subproc:140 - check_output environ: (), ['lvm', 'lvdisplay', '--colon', 'treadmill']
+INFO     [MainThread] root:22 - creating and joining: memory/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/tasks : 9653
+INFO     [MainThread] root:22 - creating and joining: cpu/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9653
+INFO     [MainThread] root:22 - creating and joining: cpuacct/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9653
+INFO     [MainThread] root:22 - creating and joining: blkio/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/blkio/treadmill/core/treadmill/tasks : 9653
+INFO     [MainThread] root:31 - setting memory.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.memsw.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.memsw.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.soft_limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.soft_limit_in_bytes : 1073741824
+INFO     [MainThread] root:37 - setting cpu.shares: 68
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/cpu.shares : 68
+DEBUG    [MainThread] treadmill.subproc:153 - Finished.
+DEBUG    [MainThread] treadmill.subproc:140 - check_output environ: (), ['lvm', 'vgdisplay', '--colon', 'treadmill']
+DEBUG    [MainThread] treadmill.subproc:153 - Finished.
+INFO     [MainThread] treadmill.services.localdisk_service:330 - Group 'treadmill' available space: 1069547520 (bytes)
+INFO     [MainThread] treadmill.idirwatch:98 - Watching directoy '/tmp/treadmill.server.ovuvfXdwZk/localdisk_svc/resources' (id: 1)
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 6: {'callback': <functools.partial object at 0x1ffdc00>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 4: {'callback': <functools.partial object at 0x1ffdba8>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 3: {'callback': <functools.partial object at 0x1ffdb50>, 'events': 1}
+DEBUG    [MainThread] treadmill.watchdog:121 - Setting up watchdog: <Lease: svc-NetworkResourceService:60>
+DEBUG    [MainThread] treadmill.subproc:107 - check_call environ: (), runas: None, ['ip', 'link', 'set', 'dev', 'tm0', 'up']
+DEBUG    [MainThread] treadmill.subproc:29 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+DEBUG    [MainThread] treadmill.subproc:33 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+DEBUG    [MainThread] treadmill.subproc:121 - Finished, rc: 0
+DEBUG    [MainThread] treadmill.subproc:107 - check_call environ: (), runas: None, ['ip', 'link', 'set', 'dev', 'tm1', 'up']
+INFO     [MainThread] root:22 - creating and joining: memory/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/tasks : 9649
+INFO     [MainThread] root:22 - creating and joining: cpu/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9649
+INFO     [MainThread] root:22 - creating and joining: cpuacct/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9649
+INFO     [MainThread] root:22 - creating and joining: blkio/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/blkio/treadmill/core/treadmill/tasks : 9649
+INFO     [MainThread] root:31 - setting memory.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.memsw.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.subproc:121 - Finished, rc: 0
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.memsw.limit_in_bytes : 1073741824
+DEBUG    [MainThread] treadmill.subproc:107 - check_call environ: (), runas: None, ['ip', 'link', 'set', 'dev', 'br0', 'up']
+INFO     [MainThread] root:31 - setting memory.soft_limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.soft_limit_in_bytes : 1073741824
+INFO     [MainThread] root:37 - setting cpu.shares: 68
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/cpu.shares : 68
+INFO     [MainThread] treadmill.sproc.init:50 - Initializing Treadmill: /tmp/treadmill.server.ovuvfXdwZk
+DEBUG    [MainThread] treadmill.zkutils:235 - Connecting to zookeeper://localhost:2181
+DEBUG    [MainThread] treadmill.subproc:121 - Finished, rc: 0
+DEBUG    [MainThread] treadmill.zkutils:262 - Connecting to zookeeper: {'auth_data': [], 'connection_retry': {'max_jitter': 0.2, 'max_delay': 1, 'delay': 0.2, 'max_tries': 30, 'backoff': 2, 'ignore_expire': False}, 'hosts': 'localhost:2181', 'command_retry': {'max_jitter': 0.2, 'max_delay': 1, 'delay': 0.2, 'max_tries': 30, 'backoff': 2, 'ignore_expire': False}, 'client_id': None}
+DEBUG    [MainThread] treadmill.subproc:107 - check_call environ: (), runas: None, ['brctl', 'setfd', 'br0', '0']
+DEBUG    [MainThread] treadmill.subproc:121 - Finished, rc: 0
+DEBUG    [MainThread] treadmill.netdev:487 - Setting '/proc/sys/net/ipv4/conf/tm0/route_localnet' to 1
+INFO     [MainThread] treadmill.idirwatch:98 - Watching directoy '/tmp/treadmill.server.ovuvfXdwZk/network_svc/resources' (id: 1)
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 6: {'callback': <functools.partial object at 0x18addb8>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 4: {'callback': <functools.partial object at 0x18add08>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 3: {'callback': <functools.partial object at 0x18adec0>, 'events': 1}
+DEBUG    [Thread-3  ] treadmill.zkutils:165 - ZK connection state: CONNECTED
+WARNING  [MainThread] treadmill.utils:477 - notification-fd does not exist.
+DEBUG    [MainThread] treadmill.services._base_service:538 - Event on 3: {'callback': <functools.partial object at 0x1ffdb50>, 'events': 1}
+INFO     [MainThread] treadmill.services._base_service:365 - Waiting for service 'CgroupResourceService' to become available
+INFO     [MainThread] root:22 - creating and joining: memory/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/tasks : 9654
+INFO     [MainThread] root:22 - creating and joining: cpu/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9654
+INFO     [MainThread] root:22 - creating and joining: cpuacct/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/tasks : 9654
+INFO     [MainThread] root:22 - creating and joining: blkio/treadmill/core/treadmill
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/blkio/treadmill/core/treadmill/tasks : 9654
+INFO     [MainThread] root:31 - setting memory.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.memsw.limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.memsw.limit_in_bytes : 1073741824
+INFO     [MainThread] root:31 - setting memory.soft_limit_in_bytes: 1073741824
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/memory/treadmill/core/treadmill/memory.soft_limit_in_bytes : 1073741824
+INFO     [MainThread] root:37 - setting cpu.shares: 68
+DEBUG    [MainThread] treadmill.cgroups:62 - /sys/fs/cgroup/cpu,cpuacct/treadmill/core/treadmill/cpu.shares : 68
+DEBUG    [MainThread] treadmill.watchdog:121 - Setting up watchdog: <Lease: svc-CgroupResourceService:60>
+INFO     [MainThread] treadmill.idirwatch:98 - Watching directoy '/tmp/treadmill.server.ovuvfXdwZk/cgroup_svc/resources' (id: 1)
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 6: {'callback': <functools.partial object at 0x1ddc730>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 4: {'callback': <functools.partial object at 0x1ddc788>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:578 - Registered 3: {'callback': <functools.partial object at 0x1ddc7e0>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:538 - Event on 3: {'callback': <functools.partial object at 0x1ddc7e0>, 'events': 1}
+DEBUG    [MainThread] treadmill.services._base_service:538 - Event on 3: {'callback': <functools.partial object at 0x18adec0>, 'events': 1}
+INFO     [MainThread] treadmill.sproc.init:78 - Checking blackout list.
+INFO     [MainThread] treadmill.sproc.init:93 - /server.presence/localhost does not exist.
+INFO     [MainThread] treadmill.appmgr.initialize:14 - Initializing once.
+DEBUG    [MainThread] treadmill.subproc:209 - invoke: ['ipset', '-exist', 'restore']
+DEBUG    [MainThread] treadmill.subproc:29 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+DEBUG    [MainThread] treadmill.subproc:33 - Loading whitelist: /home/centos/treadmill/etc/linux.exe.config
+DEBUG    [MainThread] treadmill.subproc:209 - invoke: ['iptables_restore']
+DEBUG    [MainThread] treadmill.iptables:202 - Reloading Treadmill filter rules
+DEBUG    [MainThread] treadmill.subproc:209 - invoke: ['iptables_restore', '--noflush']
+INFO     [MainThread] treadmill.fs:237 - Processing plugins: /home/centos/treadmill/lib/python/treadmill/plugins/fs
+INFO     [MainThread] treadmill.fs:246 - Loading: treadmill.plugins.fs.localfs
+INFO     [MainThread] treadmill.fs:246 - Loading: treadmill.plugins.fs.nfs
+INFO     [MainThread] treadmill.sproc.init:102 - Registering node: /servers/localhost: localhost, {'up_since': 1490001576.450798, 'disk': '1020M', 'cpu': '134%', 'parent': 'mock-parent', 'memory': '0M'}
+DEBUG    [MainThread] treadmill.zkutils:434 - update /servers/localhost
+DEBUG    [MainThread] treadmill.sproc.init:106 - host_acl: ACL(perms=31, acl_list=['ALL'], id=Id(scheme='world', id='anyone'))
+DEBUG    [MainThread] treadmill.zkutils:407 - put (default_acl=True): /server.presence/localhost acl=[ACL(perms=1, acl_list=['READ'], id=Id(scheme='world', id='anyone')), ACL(perms=31, acl_list=['ALL'], id=Id(scheme='world', id='anyone')), ACL(perms=31, acl_list=['ALL'], id=Id(scheme='world', id='anyone')), ACL(perms=31, acl_list=['ALL'], id=Id(scheme='world', id='anyone'))] seq=False
+DEBUG    [MainThread] treadmill.netdev:487 - Setting '/proc/sys/net/ipv4/conf/tm0/forwarding' to 1
+INFO     [MainThread] treadmill.sproc.init:117 - Ready.
