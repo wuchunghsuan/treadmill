@@ -50,7 +50,11 @@ def init():
         _LOGGER.info('Initializing Treadmill: %s', approot)
 
         app_env = appmgr.AppEnvironment(approot)
-        zkclient = zkutils.connect(context.GLOBAL.zk.url,
+
+        # Notice: Trick
+        mock_url = "zookeeper://localhost:2181"
+        # zkclient = zkutils.connect(context.GLOBAL.zk.url,
+        zkclient = zkutils.connect(mock_url,
                                    idpath=zkid,
                                    listener=zkutils.exit_on_lost)
 

@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "centos/7"
 #   config.vm.box_url = "https://s3.amazonaws.com/ms-treadmill/base_treadmill.box"
 
   # Disable automatic box update checking. If you disable this, then
@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
-  config.vm.synced_folder "../treadmill", "/home/ubuntu/treadmill"
-  config.vm.synced_folder "../treadmill-pid1", "/home/ubuntu/treadmill-pid1"
-  config.vm.synced_folder "../treadmill-scheduler", "/home/ubuntu/treadmill-scheduler"
+  config.vm.synced_folder "../treadmill", "/home/centos/treadmill"
+  config.vm.synced_folder "../treadmill-pid1", "/home/centos/treadmill-pid1"
+  config.vm.synced_folder "../treadmill-scheduler", "/home/centos/treadmill-scheduler"
 end
