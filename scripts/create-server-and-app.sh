@@ -13,9 +13,15 @@ function log {
 
 ROOT=$(dirname "${BASH_SOURCE}")/..
 
+RSRC_ID=mock-user.mock-app
+RSRC="${ROOT}/scripts/app.yml"
+
 cd ${ROOT}
 # Create a server.
-./bin/treadmill --debug admin master server configure localhost -p /mock-parent
+#./bin/treadmill --debug admin master server configure localhost -p /mock-parent
+
 # Create a app to schedule.
-./bin/treadmill --debug admin master app schedule mockappprefix.mock-app-1 -m ./scripts/app.yml --env dev --proid mock-proid-1
+# Notice: wrong operation.
+#./bin/treadmill --debug admin master app schedule mockappprefix.mock-app-1 -m ./scripts/app.yml --env dev --proid mock-proid-1
+./bin/treadmill --debug --outfmt yaml admin invoke --cell gaocegege app create ${RSRC_ID} ${RSRC}
 cd - > /dev/null

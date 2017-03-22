@@ -62,16 +62,19 @@ class EventMgr(object):
 
     def run(self):
         """Establish connection to Zookeeper and subscribes to node events."""
+        _LOGGER.info("Establish connection to Zookeeper and subscribes to node events.")
         # Setup the watchdog
         watchdog_lease = self.tm_env.watchdogs.create(
             name='svc-{svc_name}'.format(svc_name=self.name),
             timeout='{hb:d}s'.format(hb=_WATCHDOG_TIMEOUT_SEC),
             content='Service %r failed' % self.name
         )
+        _LOGGER.info("Setup watchdog.")
 
         # Start the timer
         watchdog_lease.heartbeat()
-
+        _LOGGER.info("Start the timer for %s", self.tm_env.watchdogs.watchdog_path)
+ 
         zkclient = context.GLOBAL.zk.conn
 
         seen = zkclient.handler.event_object()
@@ -110,6 +113,7 @@ class EventMgr(object):
 
         while True:
             # Refresh watchdog
+            _LOGGER.info("Refresh watchdog.")
             watchdog_lease.heartbeat()
             time.sleep(_HEARTBEAT_SEC)
             self._cache_notify(seen.is_set())
