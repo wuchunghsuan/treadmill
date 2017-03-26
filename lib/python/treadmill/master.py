@@ -884,6 +884,7 @@ class Master(object):
 
     def reschedule(self):
         """Run scheduler and adjust placement."""
+        _LOGGER.info("Reschedule and adjust placement.")
         placement = self.cell.schedule()
 
         # Filter out placement records where nothing changed.
