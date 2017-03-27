@@ -579,6 +579,7 @@ class Node(object):
     def check_app_constraints(self, app):
         """Find app placement on the node."""
         if app.allocation is not None:
+            _LOGGER.info("app.allocation: %s", app.allocation)
             if app.allocation.label not in self.labels:
                 _LOGGER.info('Missing label: %s on %s', app.allocation.label,
                              self.name)
@@ -731,6 +732,7 @@ class Bucket(Node):
             if node.state is not State.up:
                 _LOGGER.debug('Node not up: %s, %s', node.name, node.state)
             else:
+                _LOGGER.debug('Trying to put in server %s', node.name)
                 if node.put(app):
                     return True
 
@@ -1321,6 +1323,7 @@ class Cell(Bucket):
             if not self.put(app):
                 # There is not enough capacity, from the end of the queue,
                 # evict apps, freeing capacity.
+                _LOGGER.info("bucket.put is false")
                 for evicted_app in reversed_queue:
                     # We reached the app we can't place
                     if evicted_app == app:

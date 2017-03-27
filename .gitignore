@@ -25,3 +25,4 @@ plcritic.log
 doc/build
 doc/swagger.json
 server.log
+scheduler.log

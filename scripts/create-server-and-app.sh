@@ -13,6 +13,7 @@ function log {
 
 ROOT=$(dirname "${BASH_SOURCE}")/..
 
+CELL="gaocegege"
 SERVER_NAME="mock-server-1"
 SERVER_PARENT="/mock-parent"
 APP_NAME="mockappprefix.mock-app-1"
@@ -22,8 +23,8 @@ APP_PROID="mock-proid-1"
 
 cd ${ROOT}
 # Create a server.
-./bin/treadmill --debug admin master server configure ${SERVER_NAME} -p ${SERVER_PARENT}
+./bin/treadmill --debug admin master --cell ${CELL} server configure ${SERVER_NAME} -p ${SERVER_PARENT}
 # Create a app to schedule.
-./bin/treadmill --debug admin master app schedule ${APP_NAME} \
+./bin/treadmill --debug admin master --cell ${CELL} app schedule ${APP_NAME} \
     -m ${APP_MANIFEST} --env ${APP_ENV} --proid ${APP_PROID}
 cd - > /dev/null
