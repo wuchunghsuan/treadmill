@@ -85,7 +85,9 @@ class API(object):
             """Create (configure) instance."""
             _LOGGER.info('create: count = %s, %s %r', count, rsrc_id, rsrc)
 
-            admin_app = admin.Application(context.GLOBAL.ldap.conn)
+            # Hack
+            # admin_app = admin.Application(context.GLOBAL.ldap.conn)
+            admin_app = admin.Application(None)
             if not rsrc:
                 configured = admin_app.get(rsrc_id)
                 _LOGGER.info('Configured: %s %r', rsrc_id, configured)

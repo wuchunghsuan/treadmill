@@ -148,7 +148,7 @@ class Master(object):
 
     def load_cell(self):
         """Construct cell from top level buckets."""
-        buckets = self.zkclient.get_children(z.CELL)
+        buckets = self.zkclient.get_children(z.BUCKETS)
         self.cell.reset_children()
         for bucketname in buckets:
             _LOGGER.info('adding bucket to cell: %s', bucketname)

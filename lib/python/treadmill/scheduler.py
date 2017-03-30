@@ -578,22 +578,23 @@ class Node(object):
 
     def check_app_constraints(self, app):
         """Find app placement on the node."""
-        if app.allocation is not None:
-            _LOGGER.info("app.allocation: %s", app.allocation)
-            if app.allocation.label not in self.labels:
-                _LOGGER.info('Missing label: %s on %s', app.allocation.label,
-                             self.name)
-                return False
-
-        if app.traits != 0 and not self.traits.has(app.traits):
-            _LOGGER.info('Missing traits: %s on %s', app.traits, self.name)
-            return False
-
-        if (self.affinity_counters[app.affinity.name] >=
-                app.affinity.limits[self.level]):
-            return False
+        # if app.allocation is not None:
+        #     _LOGGER.info("app.allocation: %s", app.allocation)
+        #     if app.allocation.label not in self.labels:
+        #         _LOGGER.info('Missing label: %s on %s', app.allocation.label,
+        #                      self.name)
+        #         return False
+        #
+        # if app.traits != 0 and not self.traits.has(app.traits):
+        #     _LOGGER.info('Missing traits: %s on %s', app.traits, self.name)
+        #     return False
+        #
+        # if (self.affinity_counters[app.affinity.name] >=
+        #         app.affinity.limits[self.level]):
+        #     return False
 
         if _any_gt(app.demand, self.free_capacity):
+            _LOGGER.debug("_any_gt false: %s:%s", str(app.demand), str(self.free_capacity))
             return False
 
         return True
@@ -659,6 +660,7 @@ class Bucket(Node):
 
     def adjust_capacity_up(self, new_capacity):
         """Node can only increase capacity."""
+        _LOGGER.debug("adjust_capacity_up: %s:%s", str(self.free_capacity), str(new_capacity))
         self.free_capacity = np.maximum(self.free_capacity, new_capacity)
         if self.parent:
             self.parent.adjust_capacity_up(self.free_capacity)
@@ -711,16 +713,22 @@ class Bucket(Node):
         if not self.check_app_constraints(app):
             return False
 
+        _LOGGER.debug('Check done.')
+
         strategy = self.get_affinity_strategy(app.affinity.name)
+        _LOGGER.debug('Strategy: %s', str(strategy))
         node = strategy.suggested_node()
+        _LOGGER.debug('node: %s', node)
         if node is None:
             _LOGGER.debug('All nodes in the bucket deleted.')
             return False
 
         nodename0 = node.name
         first = True
+        _LOGGER.debug('nodename0: %s', node)
 
         while True:
+            _LOGGER.debug('While Loop')
             # End of iteration.
             if not first and node.name == nodename0:
                 _LOGGER.debug('Finished iterating on: %s.', self.name)
@@ -1100,6 +1108,9 @@ class Allocation(object):
             self.add_sub_alloc(name, Allocation())
         return self.sub_allocations[name]
 
+
+    def __str__(self):
+        return ' '.join([str(getattr(self, item)) for item in self.__slots__])
 
 class Partition(object):
     """Cell partition."""

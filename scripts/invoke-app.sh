@@ -20,5 +20,5 @@ OUTFMT="yaml"
 
 cd ${ROOT}
 # Create a app to schedule.
-./bin/treadmill --debug --outfmt ${OUTFMT} admin invoke --cell ${CELL} app create ${RSRC_ID} ${RSRC}
+./bin/treadmill --debug --outfmt ${OUTFMT} admin invoke --cell ${CELL} instance create ${RSRC_ID} ${RSRC}
 cd - > /dev/null

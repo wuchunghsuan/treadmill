@@ -18,9 +18,9 @@ TMPDIR=$(mktemp -d /tmp/treadmill.server.XXXXXXXXXX) || exit 1
 CELL_NAME="gaocegege"
 TREADMILL_WHITELIST="/home/centos/treadmill/etc/linux.exe.config"
 CPU_USAGE=40%
-CPU_CORES=1
-MEM=1024M
-MEM_CORE=1024M
+CPU_CORES=3
+MEM=4096M
+MEM_CORE=512M
 DEFAULT_READ_BPS=1
 DEFAULT_WRITE_BPS=1
 DEFAULT_READ_IOPS=1
@@ -59,8 +59,8 @@ sleep 3s
 
 # Run Server process.
 # confifure a server first?
-./bin/treadmill --debug admin master --cell ${CELL_NAME} server configure localhost -p /mock-parent &
-sleep 3s
+# ./bin/treadmill --debug admin master --cell ${CELL_NAME} server configure localhost -p /mock-parent &
+# sleep 3s
 log "The root of the server is ${TMPDIR}, start server process."
 sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
@@ -96,6 +96,7 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     network &
 NETWORK_SERVICE_PID=$!
 
+sleep 5s
 # Run event daemon.
 log "Start event daemon process."
 sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
