@@ -26,3 +26,6 @@ doc/build
 doc/swagger.json
 server.log
 scheduler.log
+
+# Ignore s6 installation directory
+s6/
