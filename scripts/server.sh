@@ -28,6 +28,9 @@ DEFAULT_WRITE_IOPS=1
 
 # Clean up local run.
 function server-cleanup {
+  # Kill app config manager.
+  [ -n "${APP_CFG_MGR_PID-}" ] && ps -p ${APP_CFG_MGR_PID} > /dev/null \
+    && sudo kill ${APP_CFG_MGR_PID}
   # Kill event daemon.
   [ -n "${EVENT_DAEMON_PID-}" ] && ps -p ${EVENT_DAEMON_PID} > /dev/null \
     && sudo kill ${EVENT_DAEMON_PID}
@@ -39,10 +42,8 @@ function server-cleanup {
   [ -n "${NETWORK_SERVICE_PID-}" ] && ps -p ${NETWORK_SERVICE_PID} > /dev/null \
     && kill ${NETWORK_SERVICE_PID}
   [ -n "${SERVER_PID-}" ] && ps -p ${SERVER_PID} > /dev/null && sudo kill ${SERVER_PID}
-
   # Remove the temp directory.
   [ -d "${TMPDIR}" ] && sudo rm -rf ${TMPDIR}
-
   log "server-up cleanup now."
 }
 trap server-cleanup INT EXIT
@@ -103,6 +104,14 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
     eventdaemon --approot ${TMPDIR} &
 EVENT_DAEMON_PID=$!
+
+sleep 1s
+# Run event daemon.
+log "Start app config manager process."
+sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
+    ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
+    appcfgmgr --approot ${TMPDIR} &
+APP_CFG_MGR_PID=$!
 
 cd - > /dev/null
 
