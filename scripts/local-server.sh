@@ -12,7 +12,10 @@ function log {
 }
 
 ROOT=$(dirname "${BASH_SOURCE}")/..
-TMPDIR=$(mktemp -d /tmp/treadmill.server.XXXXXXXXXX) || exit 1
+TMPDIR="/tmp/treadmill.server.local"
+if [ ! -d "${TMPDIR}" ]; then
+    mkdir -p ${TMPDIR}
+fi
 
 # Parameters to the cli.
 CELL_NAME="gaocegege"
