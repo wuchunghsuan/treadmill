@@ -28,6 +28,8 @@ DEFAULT_WRITE_IOPS=1
 
 # Clean up local run.
 function server-cleanup {
+  [ -n "${CLEANUP_PID-}" ] && ps -p ${CLEANUP_PID} > /dev/null \
+    && sudo kill ${CLEANUP_PID}
   # Kill app config manager.
   [ -n "${APP_CFG_MGR_PID-}" ] && ps -p ${APP_CFG_MGR_PID} > /dev/null \
     && sudo kill ${APP_CFG_MGR_PID}
@@ -57,6 +59,10 @@ sudo ./bin/treadmill sproc --cell ${CELL_NAME} cgroup \
     --mem ${MEM} \
     --mem-core ${MEM_CORE} &
 sleep 3s
+
+# Run install process.
+sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
+	./bin/treadmill --ldap 1 --ldap-search-base ../asd admin install --config ./etc/linux.exe.config node --install-dir /tmp/treadmill.server.local
 
 # Run Server process.
 # confifure a server first?
@@ -105,6 +111,7 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     eventdaemon --approot ${TMPDIR} &
 EVENT_DAEMON_PID=$!
 
+# Run supervisor.
 sudo /usr/local/bin/s6-svscan ${TMPDIR}/running &
 
 sleep 1s
@@ -114,6 +121,13 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
     appcfgmgr --approot ${TMPDIR} &
 APP_CFG_MGR_PID=$!
+
+# Run cleanup.
+log "Start cleanup process."
+sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
+    ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
+    cleanup --approot ${TMPDIR} &
+CLEANUP_PID=$!
 
 cd - > /dev/null
 echo ${TMPDIR}

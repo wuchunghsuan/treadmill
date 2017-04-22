@@ -141,10 +141,10 @@ class BootstrapBase(object):
     def _params(self):
         """Parameters for both node and master."""
         cellname = context.GLOBAL.cell
-        admin_cell = admin.Cell(context.GLOBAL.ldap.conn)
+        #admin_cell = admin.Cell(context.GLOBAL.ldap.conn)
         params = {}
         params.update(self.defaults)
-        params.update(admin_cell.get(cellname))
+        #params.update(admin_cell.get(cellname))
         params.update({
             'cell': cellname,
             'zookeeper': context.GLOBAL.zk.url,
@@ -152,7 +152,7 @@ class BootstrapBase(object):
             'dns_domain': context.GLOBAL.dns_domain,
             'ldap_search_base': context.GLOBAL.ldap.search_base,
             'treadmill': treadmill.TREADMILL,
-            'treadmillid': params['username'],
+            'treadmillid': "mock-id-in-bootstrap",
             'dir': self.dst_dir
         })
         return params

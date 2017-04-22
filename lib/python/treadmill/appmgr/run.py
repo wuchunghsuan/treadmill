@@ -147,8 +147,8 @@ def run(tm_env, container_dir, watchdog, terminated):
         # Freeze the app data into a namedtuple object
         app = utils.to_obj(manifest)
 
-        if not app.shared_network:
-            _unshare_network(tm_env, app)
+        #if not app.shared_network:
+            #_unshare_network(tm_env, app)
 
         # Create root directory structure (chroot base).
         # container_dir/<subdir>
@@ -520,11 +520,14 @@ def _create_root_dir(tm_env, container_dir, root_dir, app):
     localdisk_client = tm_env.svc_localdisk.make_client(
         os.path.join(container_dir, 'localdisk')
     )
+    _LOGGER.warn("Before wait.")
     localdisk = localdisk_client.wait(unique_name)
-
+    _LOGGER.warn("Before test fs.")
     already_initialized = fs.test_filesystem(localdisk['block_dev'])
+    _LOGGER.warn("After test fs.")
     if not already_initialized:
         # Format the block device
+        _LOGGER.warn("before create fs.")
         fs.create_filesystem(localdisk['block_dev'])
 
     _LOGGER.info('Creating container root directory: %s', root_dir)

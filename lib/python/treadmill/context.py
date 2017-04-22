@@ -78,7 +78,7 @@ class ZkContext(object):
     )
 
     def __init__(self, resolve=None):
-        self.url = None
+        self.url = "zookeeper://localhost:2181"
         self.proid = None
         self._conn = None
         self._resolve = resolve
