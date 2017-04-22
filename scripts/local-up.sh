@@ -17,18 +17,15 @@ CELL_NAME=gaocegege
 
 # Clean up local run.
 function local-cleanup {
+  [ -n "${TMSCHEDULER_PID-}" ] && ps -p ${TMSCHEDULER_PID} > /dev/null && kill ${TMSCHEDULER_PID}
   [ -d "${TMPDIR}" ] && rm -rf ${TMPDIR}
   docker-compose stop
   docker-compose rm -vf
-  [ -n "${TMSCHEDULER_PID-}" ] && ps -p ${TMSCHEDULER_PID} > /dev/null && kill ${TMSCHEDULER_PID}
   log "local-up cleanup now."
 }
 trap local-cleanup INT EXIT
 
-if [[ "$(which docker)" == "" ]]; then
- log "Unable to find docker"
- exit 1
-fi
+sudo systemctl restart docker
 
 cd ${ROOT}
 docker-compose up -d --force-recreate

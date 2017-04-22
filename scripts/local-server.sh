@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Usage:
-#       local-up.sh Start the standalone scheduler.
+#       local-up.sh Start the standalone server.
 
-# Timestamped log, e.g. log "cluster created".
+# Timestamped log, e.g. log "server created".
 #
 # Input:
 #   $1 Log string.
@@ -14,12 +14,13 @@ function log {
 ROOT=$(dirname "${BASH_SOURCE}")/..
 TMPDIR="/tmp/treadmill.server.local"
 if [ ! -d "${TMPDIR}" ]; then
-    mkdir -p ${TMPDIR}
+    sudo mkdir -p ${TMPDIR}
+    sudo chown ${USER} -R /tmp/treadmill.server.local
 fi
 
 # Parameters to the cli.
 CELL_NAME="gaocegege"
-TREADMILL_WHITELIST="/home/centos/treadmill/etc/linux.exe.config"
+TREADMILL_WHITELIST="/home/vagrant/treadmill/etc/linux.exe.config"
 CPU_USAGE=40%
 CPU_CORES=3
 MEM=4096M
@@ -43,10 +44,12 @@ function server-cleanup {
   [ -n "${LOCALDISK_SERVICE_PID-}" ] && ps -p ${LOCALDISK_SERVICE_PID} > /dev/null \
     && sudo kill ${LOCALDISK_SERVICE_PID}
   [ -n "${CGROUP_SERVICE_PID-}" ] && ps -p ${CGROUP_SERVICE_PID} > /dev/null \
-    && kill ${CGROUP_SERVICE_PID}
+    && sudo kill ${CGROUP_SERVICE_PID}
   [ -n "${NETWORK_SERVICE_PID-}" ] && ps -p ${NETWORK_SERVICE_PID} > /dev/null \
-    && kill ${NETWORK_SERVICE_PID}
+    && sudo kill ${NETWORK_SERVICE_PID}
   [ -n "${SERVER_PID-}" ] && ps -p ${SERVER_PID} > /dev/null && sudo kill ${SERVER_PID}
+  [ -n "${SUPERVISOR_PID-}" ] && ps -p ${SUPERVISOR_PID} > /dev/null \
+    && sudo kill ${SUPERVISOR_PID}
   # Remove the temp directory.
   [ -d "${TMPDIR}" ] && sudo rm -rf ${TMPDIR}
   log "server-up cleanup now."
@@ -57,9 +60,9 @@ cd ${ROOT}
 
 log "Start installation."
 sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
-        ./bin/treadmill --ldap 1 --ldap-search-base ../asd admin install --config ./etc/linux.exe.config node --install-dir /tmp/treadmill.server.local &
-
-sleep 3s
+        ./bin/treadmill admin install \
+        --config ./etc/linux.exe.config node \
+        --install-dir /tmp/treadmill.server.local
 
 # Init cgroup?
 log "Initialize cgroup fs."
@@ -67,8 +70,7 @@ sudo ./bin/treadmill sproc --cell ${CELL_NAME} cgroup \
     init --cpu ${CPU_USAGE} \
     --cpu-cores ${CPU_CORES} \
     --mem ${MEM} \
-    --mem-core ${MEM_CORE} &
-sleep 3s
+    --mem-core ${MEM_CORE}
 
 # Run Server process.
 # confifure a server first?
@@ -119,6 +121,7 @@ EVENT_DAEMON_PID=$!
 
 # Run supervisor.
 sudo s6-supervise /tmp/treadmill.server.local/init/supervisor &
+SUPERVISOR_PID=$!
 #sudo /usr/local/bin/s6-svscan ${TMPDIR}/running &
 sleep 1s
 

@@ -176,10 +176,10 @@ def run(tm_env, container_dir, watchdog, terminated):
         _share_cgroup_info(app, root_dir)
 
         ldpreloads = []
-        if app.ephemeral_ports.tcp or app.ephemeral_ports.udp:
-            treadmill_bind_preload = subproc.resolve(
-                'treadmill_bind_preload.so')
-            ldpreloads.append(treadmill_bind_preload)
+        # if app.ephemeral_ports.tcp or app.ephemeral_ports.udp:
+        #     treadmill_bind_preload = subproc.resolve(
+        #         'treadmill_bind_preload.so')
+        #     ldpreloads.append(treadmill_bind_preload)
 
         _prepare_ldpreload(root_dir, ldpreloads)
 
