@@ -17,11 +17,10 @@ curl "https://bootstrap.pypa.io/get-pip.py" | sudo python
 sudo pip install -r requirements.txt
 
 # docker-compose
-curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > docker-compose
-sudo mv docker-compose > /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+sudo cp /home/vagrant/treadmill/docker-compose > /usr/local/bin/docker-compose
 
 # s6
+cd ${HOME}
 if [[ ! -d /home/vagrant/skalibs/.git ]]
 	then
 		git clone git://git.skarnet.org/skalibs
@@ -39,6 +38,7 @@ if [[ ! -d /home/vagrant/s6/.git ]]
 		git clone https://github.com/skarnet/s6.git
 		cd s6 && ./configure && make && sudo make install && sudo mv s6-* /usr/local/bin && cd -
 fi
+cd - > /dev/null
 
 sudo yum -y install docker
 sudo groupadd docker
@@ -57,6 +57,8 @@ cat /home/vagrant/treadmill-scheduler/.env/init.sh >> /home/vagrant/.zshrc
 # Defaults  env_keep += "TREADMILL_CELL"
 # Defaults  env_keep += "TREADMILL_EXE_WHITELIST"
 # Defaults  env_keep += "TREADMILL_WHITELIST"
+# Defaults  env_keep += "TREADMILL_APPROOT"
+
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 echo "${RED}Notice: ${NC} visudo to set environment variables in root user:"
@@ -67,6 +69,7 @@ Defaults  env_keep += \"TREADMILL_ENV\"
 Defaults  env_keep += \"TREADMILL_PROID\"
 Defaults  env_keep += \"TREADMILL_CELL\"
 Defaults  env_keep += \"TREADMILL_EXE_WHITELIST\"
-Defaults  env_keep += \"TREADMILL_WHITELIST\""
+Defaults  env_keep += \"TREADMILL_WHITELIST\"
+Defaults  env_keep += \"TREADMILL_APPROOT\""
 echo "${RED}Notice: ${NC} Set the number of CPUs in virtualbox UI to 4 or more."
 echo "${RED}Notice: ${NC} re-ssh to allow normal user to use docker."
