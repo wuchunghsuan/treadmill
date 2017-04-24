@@ -1,23 +1,24 @@
 #!/usr/bin/zsh
 
 sudo yum -y update
-sudo yum -y install java wget git
+sudo yum -y install java wget git vim
 
 #treadmill services deps
-sudo yum -y install ipset iptables bridge-utils libcgroup-tools lvm2*
+sh -c 'sudo yum -y install ipset iptables bridge-utils libcgroup-tools lvm2*'
 
 # treadmill build deps
 sudo yum -y group install "Development Tools"
 sudo yum -y install python-devel ntp krb5-server krb5-libs krb5-devel
 sudo yum -y install epel-release
 sudo yum -y install mercurial openssl-devel
+sudo yum -y install rrdtool
 
 # pip
 curl "https://bootstrap.pypa.io/get-pip.py" | sudo python
 sudo pip install -r requirements.txt
 
 # docker-compose
-sudo cp /home/vagrant/treadmill/docker-compose > /usr/local/bin/docker-compose
+sudo cp /home/vagrant/treadmill/docker-compose /usr/local/bin/docker-compose
 
 # s6
 cd ${HOME}
@@ -48,6 +49,8 @@ sudo usermod -aG docker $USER
 sudo useradd mock-user
 
 cat /home/vagrant/treadmill-scheduler/.env/init.sh >> /home/vagrant/.zshrc
+
+sudo ./scripts/setup/setup-conntrack.sh
 
 # Defaults  env_keep += "TREADMILL_DNS_DOMAIN"
 # Defaults  env_keep += "TREADMILL_LDAP"

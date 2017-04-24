@@ -120,6 +120,7 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
 EVENT_DAEMON_PID=$!
 
 # Run supervisor.
+log "Start supervisor process."
 sudo s6-supervise /tmp/treadmill.server.local/init/supervisor &
 SUPERVISOR_PID=$!
 #sudo /usr/local/bin/s6-svscan ${TMPDIR}/running &
@@ -140,6 +141,9 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
     appcfgmgr --approot ${TMPDIR} &
 APP_CFG_MGR_PID=$!
+
+# Run rrdcached
+sudo rrdcached -l unix:/tmp/treadmill.rrd -p /tmp/treadmill.rrd.pid &
 
 cd - > /dev/null
 echo ${TMPDIR}
