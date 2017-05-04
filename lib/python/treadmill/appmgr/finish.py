@@ -102,7 +102,7 @@ def finish(tm_env, zkclient, container_dir):
                 _post_exit_event(tm_env, app, exitinfo)
 
         # Delete the app directory (this includes the tarball, if any)
-        shutil.rmtree(container_dir)
+        # shutil.rmtree(container_dir)
 
         # cleanup was succesful, remove the watchdog
         watchdog.remove()

@@ -48,7 +48,15 @@ sudo usermod -aG docker $USER
 # To mock proid.
 sudo useradd mock-user
 
-cat /home/vagrant/treadmill-scheduler/.env/init.sh >> /home/vagrant/.zshrc
+# Build pid1.
+cd /home/vagrant/treadmill-pid1
+make
+sudo cp pid1 /bin/
+cd - > /dev/null
+
+# Install envs.
+cp /home/vagrant/.zshrc /home/vagrant/.zshrc.backup
+cat /home/vagrant/treadmill/.env/init.sh >> /home/vagrant/.zshrc
 
 sudo ./scripts/setup/setup-conntrack.sh
 
@@ -74,5 +82,4 @@ Defaults  env_keep += \"TREADMILL_CELL\"
 Defaults  env_keep += \"TREADMILL_EXE_WHITELIST\"
 Defaults  env_keep += \"TREADMILL_WHITELIST\"
 Defaults  env_keep += \"TREADMILL_APPROOT\""
-echo "${RED}Notice: ${NC} Set the number of CPUs in virtualbox UI to 4 or more."
-echo "${RED}Notice: ${NC} re-ssh to allow normal user to use docker."
+echo "${RED}Notice: ${NC} re-ssh and run `sudo systemctl start docker` to allow normal user to use docker."

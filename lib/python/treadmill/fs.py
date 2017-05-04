@@ -322,9 +322,9 @@ def make_rootfs(newroot, proid):
         '/var/tmp/cores/',
     ]
 
-    for mount in mounts:
-        if os.path.exists(mount):
-            mount_bind(newroot_norm, mount)
+    # for mount in mounts:
+    #    if os.path.exists(mount):
+    #        mount_bind(newroot_norm, mount)
 
     for directory in emptydirs:
         mkdir_safe(newroot_norm + directory)

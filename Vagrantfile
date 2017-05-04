@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # config.vm.network "forwarded_port", guest: 2181, host: 2181
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -85,5 +85,4 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "../treadmill", "/home/vagrant/treadmill"
   config.vm.synced_folder "../treadmill-pid1", "/home/vagrant/treadmill-pid1"
-  config.vm.synced_folder "../treadmill-scheduler", "/home/vagrant/treadmill-scheduler"
 end

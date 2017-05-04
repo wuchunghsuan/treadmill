@@ -15,7 +15,7 @@ ROOT=$(dirname "${BASH_SOURCE}")/..
 TMPDIR="/tmp/treadmill.server.local"
 if [ ! -d "${TMPDIR}" ]; then
     sudo mkdir -p ${TMPDIR}
-    sudo chown ${USER} -R /tmp/treadmill.server.local
+    sudo chown ${USER} -R /tmp/treadmill.server.local-1
 fi
 
 # Parameters to the cli.
@@ -62,7 +62,7 @@ log "Start installation."
 sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
         ./bin/treadmill admin install \
         --config ./etc/linux.exe.config node \
-        --install-dir /tmp/treadmill.server.local
+        --install-dir ${TMPDIR}
 
 # Init cgroup?
 log "Initialize cgroup fs."
@@ -121,7 +121,7 @@ EVENT_DAEMON_PID=$!
 
 # Run supervisor.
 log "Start supervisor process."
-sudo s6-supervise /tmp/treadmill.server.local/init/supervisor &
+sudo s6-supervise ${TMPDIR}/init/supervisor &
 SUPERVISOR_PID=$!
 #sudo /usr/local/bin/s6-svscan ${TMPDIR}/running &
 sleep 1s
