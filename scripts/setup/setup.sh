@@ -15,7 +15,7 @@ sudo yum -y install rrdtool
 
 # pip
 curl "https://bootstrap.pypa.io/get-pip.py" | sudo python
-sudo pip install -r home/vagrant/treadmill/requirements.txt
+sudo pip install -r /home/vagrant/treadmill/requirements.txt
 
 # docker-compose
 sudo cp /home/vagrant/treadmill/docker-compose /usr/local/bin/docker-compose
