@@ -58,7 +58,7 @@ cd - > /dev/null
 cp /home/vagrant/.zshrc /home/vagrant/.zshrc.backup
 cat /home/vagrant/treadmill/.env/init.sh >> /home/vagrant/.zshrc
 
-sudo ./scripts/setup/setup-conntrack.sh
+# sudo ./scripts/setup/setup-conntrack.sh
 
 # Defaults  env_keep += "TREADMILL_DNS_DOMAIN"
 # Defaults  env_keep += "TREADMILL_LDAP"

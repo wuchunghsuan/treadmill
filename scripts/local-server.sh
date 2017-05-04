@@ -15,7 +15,7 @@ ROOT=$(dirname "${BASH_SOURCE}")/..
 TMPDIR="/tmp/treadmill.server.local"
 if [ ! -d "${TMPDIR}" ]; then
     sudo mkdir -p ${TMPDIR}
-    sudo chown ${USER} -R /tmp/treadmill.server.local-1
+    sudo chown ${USER} -R ${TMPDIR}
 fi
 
 # Parameters to the cli.
