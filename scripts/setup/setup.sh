@@ -11,7 +11,7 @@ sudo yum -y group install "Development Tools"
 sudo yum -y install python-devel ntp krb5-server krb5-libs krb5-devel
 sudo yum -y install epel-release
 sudo yum -y install mercurial openssl-devel
-sudo yum -y install rrdtool
+sudo yum -y install rrdtool conntrack
 
 # pip
 curl "https://bootstrap.pypa.io/get-pip.py" | sudo python

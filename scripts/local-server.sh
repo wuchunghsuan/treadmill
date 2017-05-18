@@ -119,6 +119,12 @@ sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
     eventdaemon --approot ${TMPDIR} &
 EVENT_DAEMON_PID=$!
 
+# Run app events.
+log "Start app events process."
+sudo TREADMILL_EXE_WHITELIST=${TREADMILL_WHITELIST} \
+    ./bin/treadmill sproc --cell ${CELL_NAME} --cgroup . \
+    appevents ${TMPDIR}/appevents &
+
 # Run supervisor.
 log "Start supervisor process."
 sudo s6-supervise ${TMPDIR}/init/supervisor &

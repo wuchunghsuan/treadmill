@@ -215,32 +215,32 @@ def _cleanup(tm_env, zkclient, container_dir, app):
         )
     )
 
-    # Tar up container root filesystem if archive list is in manifest
-    try:
-        localdisk = localdisk_client.get(unique_name)
-        fs.archive_filesystem(
-            localdisk['block_dev'],
-            rootdir,
-            archive_filename,
-            app.archive
-        )
-    except services.ResourceServiceError:
-        _LOGGER.warning('localdisk never allocated')
-    except subprocess.CalledProcessError:
-        _LOGGER.exception('Unable to archive root device of %r',
-                          unique_name)
-    except:  # pylint: disable=W0702
-        _LOGGER.exception('Unknown exception while archiving %r',
-                          unique_name)
+    # # Tar up container root filesystem if archive list is in manifest
+    # try:
+    #     localdisk = localdisk_client.get(unique_name)
+    #     fs.archive_filesystem(
+    #         localdisk['block_dev'],
+    #         rootdir,
+    #         archive_filename,
+    #         app.archive
+    #     )
+    # except services.ResourceServiceError:
+    #     _LOGGER.warning('localdisk never allocated')
+    # except subprocess.CalledProcessError:
+    #     _LOGGER.exception('Unable to archive root device of %r',
+    #                       unique_name)
+    # except:  # pylint: disable=W0702
+    #     _LOGGER.exception('Unknown exception while archiving %r',
+    #                       unique_name)
 
-    # Destroy the volume
-    try:
-        localdisk = localdisk_client.delete(unique_name)
-    except (IOError, OSError) as err:
-        if err.errno == errno.ENOENT:
-            pass
-        else:
-            raise
+    # # Destroy the volume
+    # try:
+    #     localdisk = localdisk_client.delete(unique_name)
+    # except (IOError, OSError) as err:
+    #     if err.errno == errno.ENOENT:
+    #         pass
+    #     else:
+    #         raise
 
     if not app.shared_network:
         _cleanup_network(tm_env, app, network_client)

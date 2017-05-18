@@ -386,6 +386,8 @@ def _init_block_dev(img_location, img_size='-2G'):
 
     try:
         loop_dev = _loop_dev_for(filename)
+        if loop_dev is None:
+            _create_image(TREADMILL_IMG, img_location, img_size)
 
     except subprocess.CalledProcessError:
         # The file doesn't exist.
