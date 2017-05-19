@@ -67,16 +67,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", path: "./scripts/provision.sh"
 
-  config.vm.define :master do |master|
-    master.vm.provider "virtualbox" do |v|
-      v.memory = 1024*2
-      v.cpus = 2
-    end
-    master.vm.provision "shell", path: "./scripts/vagrant_master.sh"
-    master.vm.network :private_network, ip: "10.10.10.10"
-    master.vm.hostname = 'master'
-  end
-
   config.vm.define :node do |node|
     node.vm.provider "virtualbox" do |v|
       v.memory = 1024*6
@@ -85,6 +75,16 @@ Vagrant.configure("2") do |config|
     node.vm.provision "shell", path: "./scripts/vagrant_node.sh"
     node.vm.network :private_network, ip: "10.10.10.11"
     node.vm.hostname = 'node'
+  end
+
+  config.vm.define :master do |master|
+    master.vm.provider "virtualbox" do |v|
+      v.memory = 1024*2
+      v.cpus = 2
+    end
+    master.vm.provision "shell", path: "./scripts/vagrant_master.sh"
+    master.vm.network :private_network, ip: "10.10.10.10"
+    master.vm.hostname = 'master'
   end
 
   config.vm.synced_folder "../treadmill", "/home/centos/treadmill"
