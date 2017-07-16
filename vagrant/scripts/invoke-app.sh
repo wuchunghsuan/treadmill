@@ -15,7 +15,7 @@ ROOT=$(dirname "${BASH_SOURCE}")/../..
 
 CELL="local"
 RSRC_ID=treadml.mock-app
-RSRC="${ROOT}/manifests/app.yml"
+RSRC="manifests/app.yml"
 OUTFMT="yaml"
 
 cd ${ROOT}

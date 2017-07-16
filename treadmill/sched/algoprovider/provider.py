@@ -54,6 +54,7 @@ class Provider(object):
             _LOGGER.debug('predicate: ' + predicate_item['name'])
         filtered_nodes = self._find_nodes_that_fit(app, nodes)
         if len(filtered_nodes) is 0:
+            _LOGGER.debug('There is no qualified nodes.')
             return False
 
         _LOGGER.debug('Prioritizing')
@@ -73,7 +74,6 @@ class Provider(object):
             return True
 
         filtered_nodes = list(filter(filter_predicate, nodes))
-        _LOGGER.debug(filtered_nodes)
         return filtered_nodes
 
     def _prioritize_nodes(self, app, filtered_nodes):

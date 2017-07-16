@@ -683,9 +683,18 @@ class Bucket(Node):
         """Adds node to the bucket."""
         super(Bucket, self).add_node(node)
         # Assume that the parent is cell.
-        if self.parent and isinstance(self.parent, Cell):
-            self.parent.add_server(self.children_by_name[node.name])
+        if isinstance(node, Server):
+            _LOGGER.debug("Add node to cell.flatten_nodes.")
+            self.add_server_to_cell(node)
         self.adjust_capacity_up(node.free_capacity)
+
+    def add_server_to_cell(self, node):
+        working_node = self
+        while working_node.parent is not None:
+            working_node = working_node.parent
+        _LOGGER.debug(working_node)
+        if isinstance(working_node, Cell):
+            working_node.add_server(node)
 
     def remove_node(self, node):
         """Removes node from the bucket."""
@@ -1423,9 +1432,7 @@ class Cell(Bucket):
         self._fix_invalid_identities(queue, servers)
         # self._restore(queue, servers)
 
-        # For Test
-        # self._find_placements(queue, servers)
-        self._find_placements_new(queue, servers)
+        self._find_placements(queue, servers)
 
         after = [(app.server, app.placement_expiry)
                  for app in queue]
@@ -1467,12 +1474,15 @@ class Cell(Bucket):
         super(Cell, self).add_node(node)
         if isinstance(node, Bucket):
             return
+        _LOGGER.debug("Add node directly to cell.")
         self.add_server(self.children_by_name[node.name])
 
     def add_server(self, server):
         self.flatten_nodes.append(server)
 
-    def _find_placements_new(self, queue, servers):
+
+class CellWithK8sScheduler(Cell):
+    def _find_placements(self, queue, servers):
         """Run the queue and find placements."""
         # Disable too many branches/statements warning
         #
@@ -1591,7 +1601,6 @@ class Cell(Bucket):
         super(Cell, self).reset_children()
         # TODO: Reset self.flatten_nodes.
         pass
-
 
 def dumps(cell):
     """Serializes cell to string."""

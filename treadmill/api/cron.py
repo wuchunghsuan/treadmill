@@ -17,7 +17,6 @@ class API(object):
     """Treadmill Cron REST api."""
 
     def __init__(self):
-        self.scheduler = None
 
         def _list(match=None):
             pass
