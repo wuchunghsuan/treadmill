@@ -99,7 +99,8 @@ EVENT_BATCH_COUNT = 20
 class Master(object):
     """Treadmill master scheduler."""
 
-    def __init__(self, zkclient, cellname, scheduler_vendor='k8s', events_dir=None):
+    def __init__(self, zkclient, cellname,
+                 scheduler_vendor='k8s', events_dir=None):
         if scheduler_vendor == 'k8s':
             _LOGGER.debug('Using k8s scheduler.')
             self.cell = scheduler.CellWithK8sScheduler(cellname)

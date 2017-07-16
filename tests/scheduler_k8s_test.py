@@ -3,7 +3,6 @@
 
 import time
 import unittest
-import sys
 
 # Disable too many lines in module warning.
 #

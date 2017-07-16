@@ -821,13 +821,14 @@ class Server(Node):
 
     def update_r_counters(self):
         """Update rack affinity info to the server."""
-        self.rack_affinity_counters = collections.Counter(self.parent.affinity_counters)
+        self.rack_affinity_counters = \
+            collections.Counter(self.parent.affinity_counters)
 
     def update_c_counters(self):
         """Update cell affinity info to the server."""
         if self.parent.level == 'rack':
-            self.cell_affinity_counters = collections.Counter(self.parent.parent.affinity_counters)
-
+            self.cell_affinity_counters = \
+                collections.Counter(self.parent.parent.affinity_counters)
 
     def restore(self, app, placement_expiry=None):
         """Put app back on the server, ignore app lifetime."""
@@ -1601,6 +1602,7 @@ class CellWithK8sScheduler(Cell):
         super(Cell, self).reset_children()
         # TODO: Reset self.flatten_nodes.
         pass
+
 
 def dumps(cell):
     """Serializes cell to string."""
