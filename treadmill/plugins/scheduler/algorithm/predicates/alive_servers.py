@@ -1,5 +1,5 @@
 from ...predicates import PredicateConfig
-from ...utils import State
+from .....sched.utils import State
 
 
 class AliveServers(PredicateConfig):

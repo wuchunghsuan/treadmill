@@ -1,8 +1,9 @@
 import logging
 import queue
 import sys
+import importlib
 
-from ..priorities import ServerWithPriority
+from ...plugins.scheduler.priorities import ServerWithPriority
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 _LOGGER = logging.getLogger(__name__)
@@ -15,32 +16,26 @@ class Provider(object):
         'priorities_functions',
     )
 
-    PRECOCATES_CLASS_PREFIX = 'treadmill.sched.algorithm.predicates'
-    PRIORITIES_CLASS_PREFIX = 'treadmill.sched.algorithm.priorities'
+    PRECOCATES_CLASS_PREFIX = \
+        'treadmill.plugins.scheduler.algorithm.predicates'
+    PRIORITIES_CLASS_PREFIX = \
+        'treadmill.plugins.scheduler.algorithm.priorities'
 
     def __init__(self):
         self.predicates_functions = []
         self.priorities_functions = []
 
-    @staticmethod
-    def my_import(name):
-        components = name.split('.')
-        mod = __import__(components[0])
-        for comp in components[1:]:
-            mod = getattr(mod, comp)
-        return mod
-
     def register_priorities(self, name, weight):
-        priority_create_function = self.my_import(
-            '%s.%s' % (Provider.PRIORITIES_CLASS_PREFIX, name))
+        mod = importlib.import_module(Provider.PRIORITIES_CLASS_PREFIX)
+        priority_create_function = getattr(mod, name)
         self.priorities_functions.append({
             'name': name,
             'priority': priority_create_function(weight)
         })
 
     def register_predicates(self, name):
-        predicate_create_function = self.my_import(
-            '%s.%s' % (Provider.PRECOCATES_CLASS_PREFIX, name))
+        mod = importlib.import_module(Provider.PRECOCATES_CLASS_PREFIX)
+        predicate_create_function = getattr(mod, name)
         self.predicates_functions.append({
             'name': name,
             'predicate': predicate_create_function()
