@@ -13,4 +13,5 @@ exec                                                                        \
     {{ s6 }}/bin/s6-setuidgid {{ treadmillid }}                             \
     {{ treadmill_bin }} sproc                                               \
         scheduler /treadmill/appevents                                      \
-        --vendor k8s
+        --vendor k8s                                                        \
+        --config ./config.json

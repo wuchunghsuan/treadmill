@@ -1190,12 +1190,6 @@ class Cell(Bucket):
         self.apps = dict()
         self.identity_groups = collections.defaultdict(IdentityGroup)
         self.next_event_at = np.inf
-        # TODO: Add external args to support customize the config file path.
-        # config = factory.ConfigFactory().read_config_from_file(
-        #     '/home/ist/code/treadmill/'
-        #     'treadmill/sched/config/config.json').build()
-        config = factory.ConfigFactory().with_default_provider().build()
-        self.algorithm_provider = config.algorithm_provider
 
     def add_app(self, allocation, app):
         """Adds application to the scheduled list."""
@@ -1483,6 +1477,16 @@ class Cell(Bucket):
 
 
 class CellWithK8sScheduler(Cell):
+    def __init__(self, cellname, config=None, labels=None):
+        super(CellWithK8sScheduler, self).__init__(cellname, labels=labels)
+        if config:
+            scheduler_config = factory.ConfigFactory()\
+                .read_config_from_file(config).build()
+        else:
+            scheduler_config = factory.ConfigFactory()\
+                .with_default_provider().build()
+        self.algorithm_provider = scheduler_config.algorithm_provider
+
     def _find_placements(self, queue, servers):
         """Run the queue and find placements."""
         # Disable too many branches/statements warning

@@ -100,10 +100,10 @@ class Master(object):
     """Treadmill master scheduler."""
 
     def __init__(self, zkclient, cellname,
-                 scheduler_vendor='k8s', events_dir=None):
+                 scheduler_vendor='k8s', config=None, events_dir=None):
         if scheduler_vendor == 'k8s':
             _LOGGER.debug('Using k8s scheduler.')
-            self.cell = scheduler.CellWithK8sScheduler(cellname)
+            self.cell = scheduler.CellWithK8sScheduler(cellname, config)
         elif scheduler_vendor == 'native':
             _LOGGER.debug('Using native scheduler.')
             self.cell = scheduler.Cell(cellname)

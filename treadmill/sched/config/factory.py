@@ -26,13 +26,17 @@ class ConfigFactory(object):
     def __init__(self):
         self.algorithm_provider = provider.Provider()
 
-    def read_config_from_file(self, file):
-        with open(file, 'r') as config_file:
+    def read_config_from_file(self, filename):
+        """Read config from the given file."""
+        _LOGGER.debug('Read config from the given file ' + filename)
+        with open(filename, 'r') as config_file:
             json_str = config_file.read()
             config = json.loads(json_str)
             # TODO: `is not None` does not work to check if the ket exists.
             if config[self.PREDICATES_NAME] is not None:
                 for predicate in config[self.PREDICATES_NAME]:
+                    _LOGGER.debug('Add ' + predicate[self.CONFIG_NAME] +
+                                  ' to scheduler provider.')
                     self.algorithm_provider.register_predicates(
                         predicate[self.CONFIG_NAME])
             else:
@@ -40,6 +44,8 @@ class ConfigFactory(object):
 
             if config[self.PRIORITIES_NAME] is not None:
                 for priority in config[self.PRIORITIES_NAME]:
+                    _LOGGER.debug('Add ' + priority[self.CONFIG_NAME] +
+                                  ' to scheduler provider.')
                     self.algorithm_provider.register_priorities(
                         priority[self.CONFIG_NAME],
                         priority[self.PRIORITY_WEIGHT])
