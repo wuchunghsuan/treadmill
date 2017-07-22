@@ -337,9 +337,9 @@ class CellTest(unittest.TestCase):
 
         cell.schedule()
 
-        # Both apps having different affinity, will be on same node.
+        # Apps should be scheduled on different nodes.
         first_srv = sticky_apps[0].server
-        self.assertEqual(sticky_apps[0].server, unsticky_app.server)
+        self.assertNotEqual(sticky_apps[0].server, unsticky_app.server)
 
         # Mark srv_a as down, unsticky app migrates right away,
         # sticky stays.

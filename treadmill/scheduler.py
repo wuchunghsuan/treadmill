@@ -1587,10 +1587,18 @@ class CellWithK8sScheduler(Cell):
                                             evicted_app.placement_expiry)
                     evicted_app_server.remove(evicted_app.name)
 
-                    # TODO: we need to check affinity limit constraints on
-                    #       each level, all the way to the top.
-                    if evicted_app_server.put(app):
-                        break
+                    node = evicted_app_server
+                    flag = True
+                    while True:
+                        node = node.parent
+                        if not node:
+                            break
+                        if (node.affinity_counters[app.affinity.name] >=
+                                app.affinity.limits[node.level]):
+                            flag = False
+                    if flag:
+                        if evicted_app_server.put(app):
+                            break
 
             # Placement failed.
             if not app.server:
