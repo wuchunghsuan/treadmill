@@ -6,7 +6,7 @@
   ],
   "priorities": [
     {
-      "name": "least_requests",
+      "name": "spread",
       "weight": 1
     }
   ]

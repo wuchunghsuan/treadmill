@@ -2,7 +2,7 @@ import logging
 import json
 import sys
 
-from ..algoprovider import provider, default
+from ..algoprovider import provider
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 _LOGGER = logging.getLogger(__name__)
@@ -32,30 +32,36 @@ class ConfigFactory(object):
         with open(filename, 'r') as config_file:
             json_str = config_file.read()
             config = json.loads(json_str)
-            # TODO: `is not None` does not work to check if the ket exists.
-            if config[self.PREDICATES_NAME] is not None:
+
+            if self.PREDICATES_NAME in config:
                 for predicate in config[self.PREDICATES_NAME]:
-                    _LOGGER.debug('Add ' + predicate[self.CONFIG_NAME] +
-                                  ' to scheduler provider.')
-                    self.algorithm_provider.register_predicates(
-                        predicate[self.CONFIG_NAME])
+                    if self.CONFIG_NAME in predicate:
+                        _LOGGER.debug('Add ' + predicate[self.CONFIG_NAME] +
+                                      ' to scheduler provider.')
+                        self.algorithm_provider.register_predicates(
+                            predicate[self.CONFIG_NAME])
+                    else:
+                        _LOGGER.fatal("Predicate should "
+                                      "have a name defined in config file.")
             else:
                 _LOGGER.fatal("There is no config about predicates defined!")
 
-            if config[self.PRIORITIES_NAME] is not None:
+            if self.PRIORITIES_NAME in config:
                 for priority in config[self.PRIORITIES_NAME]:
-                    _LOGGER.debug('Add ' + priority[self.CONFIG_NAME] +
-                                  ' to scheduler provider.')
-                    self.algorithm_provider.register_priorities(
-                        priority[self.CONFIG_NAME],
-                        priority[self.PRIORITY_WEIGHT])
+                    if self.CONFIG_NAME in priority and \
+                       self.PRIORITY_WEIGHT in priority:
+                        _LOGGER.debug('Add ' + priority[self.CONFIG_NAME] +
+                                      ' to scheduler provider.')
+                        self.algorithm_provider.register_priorities(
+                            priority[self.CONFIG_NAME],
+                            priority[self.PRIORITY_WEIGHT])
+                    else:
+                        _LOGGER.fatal("Predicate should "
+                                      "have a name and weight "
+                                      "defined in config file.")
             else:
                 _LOGGER.fatal("There is no config about priorities defined!")
 
-        return self
-
-    def with_default_provider(self):
-        self.algorithm_provider = default.default_provider()
         return self
 
     def build(self):
