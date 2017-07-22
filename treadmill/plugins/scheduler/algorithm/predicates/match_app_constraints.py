@@ -3,12 +3,13 @@ from ...predicates import PredicateConfig
 
 class MatchAppConstraints(PredicateConfig):
     def predicate(self, app, node):
-        if (node.rack_affinity_counters[app.affinity.name] >=
-                app.affinity.limits['rack']):
-            return False
-        if (node.cell_affinity_counters[app.affinity.name] >=
-                app.affinity.limits['cell']):
-            return False
+        for level in app.affinity.limits:
+            if not node.parent_counters.get(level):
+                continue
+            for counter in node.parent_counters[level]:
+                if (counter[app.affinity.name] >=
+                        app.affinity.limits[level]):
+                    return False
         if node.check_app_constraints(app):
             return True
         return False

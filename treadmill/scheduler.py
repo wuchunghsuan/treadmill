@@ -747,8 +747,7 @@ class Server(Node):
 
     __slots__ = (
         'init_capacity',
-        'rack_affinity_counters',
-        'cell_affinity_counters',
+        'parent_counters',
         'apps',
     )
 
@@ -759,8 +758,7 @@ class Server(Node):
         self.init_capacity = np.array(capacity, dtype=float)
         self.free_capacity = self.init_capacity.copy()
         self.apps = dict()
-        self.rack_affinity_counters = collections.Counter()
-        self.cell_affinity_counters = collections.Counter()
+        self.parent_counters = dict()
 
     def __str__(self):
         return 'server: %s %s' % (self.name, self.init_capacity)
@@ -819,16 +817,17 @@ class Server(Node):
             app.placement_expiry = time.time() + app.lease
         return True
 
-    def update_r_counters(self):
-        """Update rack affinity info to the server."""
-        self.rack_affinity_counters = \
-            collections.Counter(self.parent.affinity_counters)
-
-    def update_c_counters(self):
-        """Update cell affinity info to the server."""
-        if self.parent.level == 'rack':
-            self.cell_affinity_counters = \
-                collections.Counter(self.parent.parent.affinity_counters)
+    def update_parent_counters(self):
+        """Update all affinity info to the server, including racks and cell."""
+        node = self
+        while True:
+            node = node.parent
+            if not node:
+                break
+            if self.parent_counters.get(node.level):
+                self.parent_counters[node.level].append(node.affinity_counters)
+            else:
+                self.parent_counters[node.level] = [node.affinity_counters]
 
     def restore(self, app, placement_expiry=None):
         """Put app back on the server, ignore app lifetime."""
@@ -1565,8 +1564,7 @@ class CellWithK8sScheduler(Cell):
                 continue
 
             for node in self.flatten_nodes:
-                node.update_r_counters()
-                node.update_c_counters()
+                node.update_parent_counters()
 
             if not self.algorithm_provider.schedule(app, self.flatten_nodes):
                 # There is not enough capacity, from the end of the queue,
