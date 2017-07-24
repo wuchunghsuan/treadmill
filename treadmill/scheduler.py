@@ -1482,10 +1482,9 @@ class CellWithK8sScheduler(Cell):
         if config:
             scheduler_config = factory.ConfigFactory()\
                 .read_config_from_file(config).build()
+            self.algorithm_provider = scheduler_config.algorithm_provider
         else:
-            scheduler_config = factory.ConfigFactory()\
-                .with_default_provider().build()
-        self.algorithm_provider = scheduler_config.algorithm_provider
+            _LOGGER.fatal("There is no config file provided.")
 
     def _find_placements(self, queue, servers):
         """Run the queue and find placements."""
