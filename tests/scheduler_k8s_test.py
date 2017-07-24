@@ -15,22 +15,6 @@ import numpy as np
 from treadmill import scheduler
 from functools import reduce
 
-# Create config file.
-f = tempfile.NamedTemporaryFile(prefix='treadmill.scheduler.config.', suffix='.json')
-f.write("""{
-  "predicates": [
-    {
-      "name": "match_app_constraints"
-    }
-  ],
-  "priorities": [
-    {
-      "name": "spread",
-      "weight": 1
-    }
-  ]
-}""")
-
 _TRAITS = dict()
 
 
@@ -61,11 +45,34 @@ class CellTest(unittest.TestCase):
 
     def setUp(self):
         scheduler.DIMENSION_COUNT = 2
+        # Create config file.
+        self.config_file = tempfile.NamedTemporaryFile(
+            prefix='treadmill.scheduler.config.',suffix='.json', mode='w+')
+        self.config_file.write("""{
+          "predicates": [
+            {
+              "name": "match_app_constraints"
+            },
+            {
+              "name": "match_app_lifetime"
+            },
+            {
+              "name": "alive_servers"
+            }
+          ],
+          "priorities": [
+            {
+              "name": "spread",
+              "weight": 1
+            }
+          ]
+        }""")
+        self.config_file.read()
         super(CellTest, self).setUp()
 
     def test_emtpy(self):
         """Simple test to test empty bucket"""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
 
         empty = scheduler.Bucket('empty', traits=0)
         cell.add_node(empty)
@@ -80,7 +87,7 @@ class CellTest(unittest.TestCase):
 
     def test_labels(self):
         """Test scheduling with labels."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srv_a = scheduler.Server('a_xx', [10, 10], valid_until=500, label='xx')
@@ -116,7 +123,7 @@ class CellTest(unittest.TestCase):
         # pylint - too many lines.
         #
         # pylint: disable=R0915
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srv_a = scheduler.Server('a', [10, 10], traits=0, valid_until=500)
@@ -203,7 +210,7 @@ class CellTest(unittest.TestCase):
 
     def test_max_utilization(self):
         """Test max-utilization is handled properly when priorities change"""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srv_a = scheduler.Server('a', [10, 10], traits=0, valid_until=500)
@@ -246,7 +253,7 @@ class CellTest(unittest.TestCase):
 
     def test_affinity_limits(self):
         """Test affinity limits"""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srv_a = scheduler.Server('a', [10, 10], traits=0, valid_until=500)
@@ -320,7 +327,7 @@ class CellTest(unittest.TestCase):
         # Disable pylint's too many statements warning.
         #
         # pylint: disable=R0915
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srvs = {
@@ -422,7 +429,7 @@ class CellTest(unittest.TestCase):
         # Disable pylint's too many statements warning.
         #
         # pylint: disable=R0915
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         left = scheduler.Bucket('left', traits=0)
         right = scheduler.Bucket('right', traits=0)
         srv_a = scheduler.Server('a', [10, 10], traits=0, valid_until=500)
@@ -457,7 +464,7 @@ class CellTest(unittest.TestCase):
 
     def test_identity(self):
         """Tests scheduling apps with identity."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         for idx in range(0, 10):
             server = scheduler.Server(str(idx), [10, 10], traits=0,
                                       valid_until=time.time() + 1000)
@@ -503,7 +510,7 @@ class CellTest(unittest.TestCase):
 
     def test_schedule_once(self):
         """Tests schedule once trait on server down."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         for idx in range(0, 10):
             server = scheduler.Server(str(idx), [10, 10], traits=0,
                                       valid_until=time.time() + 1000)
@@ -530,7 +537,7 @@ class CellTest(unittest.TestCase):
 
     def test_schedule_once_eviction(self):
         """Tests schedule once trait with eviction."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         for idx in range(0, 10):
             server = scheduler.Server(str(idx), [10, 10], traits=0,
                                       valid_until=time.time() + 1000)
@@ -585,7 +592,7 @@ class CellTest(unittest.TestCase):
     @mock.patch('time.time', mock.Mock(return_value=100))
     def test_restore(self):
         """Tests app restore."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         large_server = scheduler.Server('large', [10, 10], traits=0,
                                         valid_until=200)
         cell.add_node(large_server)
@@ -616,7 +623,7 @@ class CellTest(unittest.TestCase):
     @mock.patch('time.time', mock.Mock(return_value=10))
     def test_renew(self):
         """Tests app renew."""
-        cell = scheduler.CellWithK8sScheduler('top', config=f.name)
+        cell = scheduler.CellWithK8sScheduler('top', config=self.config_file.name)
         server_a = scheduler.Server('a', [10, 10], traits=0,
                                     valid_until=1000)
         cell.add_node(server_a)
