@@ -37,9 +37,9 @@ class ConfigFactory(object):
                 for predicate in config[self.PREDICATES_NAME]:
                     if self.CONFIG_NAME in predicate:
                         _LOGGER.debug('Add ' + predicate[self.CONFIG_NAME] +
-                                  ' to scheduler provider.')
+                                      ' to scheduler provider.')
                         self.algorithm_provider.register_predicates(
-                        predicate[self.CONFIG_NAME])
+                            predicate[self.CONFIG_NAME])
                     else:
                         _LOGGER.fatal("Predicate should "
                                       "have a name defined in config file.")
