@@ -15,64 +15,6 @@ In the spread mode, the scheduler will select a new node to run the app. And spr
 
 In the pack mode, the scheduler will select the same node until the node has no capacity.
 
-```{python, eval=FALSE, include=FALSE}
-class SpreadStrategy(Strategy):
-    """Spread strategy will suggest new node for each subsequent placement."""
-    __slots__ = (
-        'current_idx',
-        'node',
-    )
-
-    def __init__(self, node):
-        self.current_idx = 0
-        self.node = node
-
-    def suggested_node(self):
-        """Suggest next node from the cycle."""
-        for _ in range(0, len(self.node.children)):
-            if self.current_idx == len(self.node.children):
-                self.current_idx = 0
-
-            current = self.node.children[self.current_idx]
-            self.current_idx += 1
-            if current:
-                return current
-        # Not a single non-none node.
-        return None
-
-    def next_node(self):
-        """Suggest next node from the cycle."""
-        return self.suggested_node()
-
-
-class PackStrategy(Strategy):
-    """Pack strategy will suggest same node until it is full."""
-    __slots__ = (
-        'current_idx',
-        'node',
-    )
-
-    def __init__(self, node):
-        self.current_idx = 0
-        self.node = node
-
-    def suggested_node(self):
-        """Suggest same node as previous placement."""
-        for _ in range(0, len(self.node.children)):
-            if self.current_idx == len(self.node.children):
-                self.current_idx = 0
-            node = self.node.children[self.current_idx]
-            if node:
-                return node
-
-        return None
-
-    def next_node(self):
-        """Suggest next node from the cycle."""
-        self.current_idx += 1
-        return self.suggested_node()
-```
-
 ## Scheduler Architecture
 
 ![](./img/Architecture.jpg)
