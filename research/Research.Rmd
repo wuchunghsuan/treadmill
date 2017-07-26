@@ -7,11 +7,6 @@ organization: Shanghai Jiao Tong University
 
 Powered by R Notebook
 
-## Idea
-
-* Support policy
-* Support multi-thread, at least. Or concurrent scheduler as omega
-
 ## Perior state-of-the-art implemenetation
 
 The architecture of scheduler is simple, which has two strategies: spread and pack.
@@ -78,13 +73,46 @@ class PackStrategy(Strategy):
         return self.suggested_node()
 ```
 
+## Scheduler Architecture
+
+![](./img/Architecture.jpg)
+
++ **Predicates:**  Predicates includes all Predicate algorithms. All Predicate algorithms inherit from the base class PredicateConfig.
++ **Priorities:**  Priorities includes all Prioritize algorithms. All Prioritize algorithms inherit from the base class PredicateConfig.
++ **Provider:**  Provider offers scheduling algorithms. Provider uses ```register_priorities(name, weight)``` and ```register_predicates (name)``` functions to select algorithms from Predicates and Priorities respectively. Provider then uses the selected algorithm to Predicate and Prioritize the schedulable nodes. Finally, Provider selects the fittest node
+
+## The scheduling algorithm
+
+![](./img/algo.jpg)
+
++ First, Provider gets a set of schedulable nodes.
++ Second, Provider applies "Predicate" to filter out inappropriate nodes.
++ Finally, Provider applies "Prioritize" that rank the nodes that weren't filtered out. The node with the highest priority is chosen.
+
 ## Evualuation
 
-There are two ways to evaluate the scheduler: evaluate the performance and the result. To evaluate performance, there is a benchmark, which could run the scheduler and schedule some virtual apps in virtual nodes. And we could get the response time and function calls graph.
+TL; DR: Most applications in Morgan Treadmill are long-running, so the overhead of the shceduler is not the bottleneck.
 
-As for the result, This research reuses the simulator in sparrow, which implements some state-of-the-art scheduling policies and simulate those policies in virtual environment. This research will introduce Morgan Stanley's trace data into the simulator and try to find which policy fits well.
+![](./img/task-lifestyle.png)
 
-#### Schedle apps in 500 nodes
+The figure illustrates the lifecycle of a task in a cluster manager: after the user submits the task, it waits until the scheduler places it on a machine where it subsequently runs.  The time between submission and task placement is the
+task placement latency, and to the total time between the task’s submission and its completion is the task response time. The time a task spends being actively scheduled is the scheduler’s algorithm runtime.\cite{Firmament}
+
+In Morgan, most applications in Morgan Treadmill are long-running. The performance of the scheduler is not the bottleneck. But to show the performance of the scheduler, we evaluate how well the scheduler meets its goals:
+
+* Configurable scheduling algorithms
+* Performance
+* Task placement quality
+
+To evaluate performance,we implement some benchmark tests, which could run the scheduler and schedule some virtual apps in virtual nodes. And we could get the response time and function calls graph.
+
+Besides this, this research reuses the simulator in sparrow, which implements some state-of-the-art scheduling policies and simulate those policies in virtual environment. This research will introduce Morgan Stanley's trace data into the simulator and try to find which policy fits well. (To be determined)
+
+As for the Task placement quality, we reuses the unit test cases of the prior scheduler. Now there is only one test cases failed and we think it is a logic bug in the prior scheduler.
+
+To test the configurability, we manually creats multiple scheduler processes with different scheduling algorithms. These schedulers returns different results depending one the scheduling algorithms they use.
+
+### Schedle apps in 500 nodes
 
 There may be some errors during this evaluation, because the kernel switches the thread from core 8 to core 4 sometimes.
 
